@@ -1,6 +1,6 @@
 var React = require('react');
 var BenchStore = require('../stores/bench_store');
-var ClientActions = require('../actions/client_actions');
+var Map = require('./map');
 
 var Index = React.createClass({
   getInitialState: function() {
@@ -13,7 +13,6 @@ var Index = React.createClass({
 
   componentDidMount: function() {
     BenchStore.addListener(this.__onChange);
-    ClientActions.fetchBenches();
   },
 
   render: function() {
@@ -34,6 +33,7 @@ var Index = React.createClass({
     return (
       <div>
         {benchDisplays}
+        <Map/>
       </div>
     );
   }

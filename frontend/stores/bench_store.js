@@ -2,7 +2,6 @@ var Store = require('flux/utils').Store;
 var AppDispatcher = require('../dispatcher/dispatcher');
 var BenchConstants = require('../constants/bench_constants');
 
-
 var BenchStore = new Store(AppDispatcher);
 var _benches = [];
 
@@ -11,7 +10,7 @@ BenchStore.all = function() {
 };
 
 BenchStore.resetBenches = function(newBenches) {
-  console.log("resetBenches in Store: ", newBenches);
+  console.log("resetBenches: new benches are in store now!");
   _benches = newBenches;
 };
 

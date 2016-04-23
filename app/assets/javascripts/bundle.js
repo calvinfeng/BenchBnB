@@ -20389,7 +20389,7 @@
 	};
 	
 	BenchStore.resetBenches = function (newBenches) {
-	  console.log("resetBenches in Store: ", newBenches);
+	  console.log("resetBenches: new benches are in store now!");
 	  _benches = newBenches;
 	};
 	
@@ -26853,7 +26853,7 @@
 
 	var React = __webpack_require__(1);
 	var BenchStore = __webpack_require__(173);
-	var ClientActions = __webpack_require__(192);
+	var Map = __webpack_require__(193);
 	
 	var Index = React.createClass({
 	  displayName: 'Index',
@@ -26868,7 +26868,6 @@
 	
 	  componentDidMount: function () {
 	    BenchStore.addListener(this.__onChange);
-	    ClientActions.fetchBenches();
 	  },
 	
 	  render: function () {
@@ -26903,7 +26902,8 @@
 	    return React.createElement(
 	      'div',
 	      null,
-	      benchDisplays
+	      benchDisplays,
+	      React.createElement(Map, null)
 	    );
 	  }
 	
@@ -26924,6 +26924,58 @@
 	};
 	
 	module.exports = ClientActions;
+
+/***/ },
+/* 193 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var BenchStore = __webpack_require__(173);
+	var ClientActions = __webpack_require__(192);
+	
+	var _markers = [];
+	var Map = React.createClass({
+	  displayName: 'Map',
+	
+	
+	  __onChange: function () {
+	    var locations = BenchStore.all();
+	    var self = this;
+	
+	    locations.forEach(function (location) {
+	      var marker = new google.maps.Marker({
+	        position: { lat: location.lat, lng: location.lng },
+	        map: self.map,
+	        title: location.description
+	      });
+	      _markers.push(marker);
+	    });
+	
+	    _markers.forEach(function (marker) {
+	      marker.setMap(self.map);
+	    });
+	  },
+	
+	  componentDidMount: function () {
+	    var mapDOMNode = this.refs.map;
+	    var mapOptions = {
+	      center: { lat: 37.7758, lng: -122.435 },
+	      zoom: 13
+	    };
+	    this.map = new google.maps.Map(mapDOMNode, mapOptions);
+	    BenchStore.addListener(this.__onChange);
+	    this.map.addListener('idle', function () {
+	      ClientActions.fetchBenches();
+	    });
+	  },
+	
+	  render: function () {
+	    return React.createElement('div', { className: 'map', ref: 'map' });
+	  }
+	
+	});
+	
+	module.exports = Map;
 
 /***/ }
 /******/ ]);
