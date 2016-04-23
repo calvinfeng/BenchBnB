@@ -31,14 +31,34 @@ var Map = React.createClass({
     };
     this.map = new google.maps.Map(mapDOMNode, mapOptions);
     BenchStore.addListener(this.__onChange);
+
+    var self = this;
     this.map.addListener('idle', function() {
-      ClientActions.fetchBenches();
+      var LatLngBounds = self.map.getBounds();
+
+      var northEastBounds = {
+        lat: LatLngBounds.getNorthEast().lat(),
+        lng: LatLngBounds.getNorthEast().lng()
+      };
+
+      var southWestBounds = {
+        lat: LatLngBounds.getSouthWest().lat(),
+        lng: LatLngBounds.getSouthWest().lng()
+      };
+
+      var bounds = {
+        "northEast": northEastBounds,
+        "southWest": southWestBounds
+      };
+      ClientActions.fetchBenches(bounds);
     });
   },
 
   render: function() {
     return (
-      <div className="map" ref="map"></div>
+      <div className="map-container">
+        <div className="map" ref="map"></div>
+      </div>
     );
   }
 

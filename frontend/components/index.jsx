@@ -1,6 +1,5 @@
 var React = require('react');
 var BenchStore = require('../stores/bench_store');
-var Map = require('./map');
 
 var Index = React.createClass({
   getInitialState: function() {
@@ -21,19 +20,21 @@ var Index = React.createClass({
     if (benches.length > 0) {
       benches.forEach(function(bench) {
         benchDisplays.push(
-          <div key={bench.id}>
+          <li key={bench.id}>
             Description: {bench.description}
             <ul>
               <li>Latitude: {bench.lat}</li>
               <li>Longitude: {bench.lng}</li>
             </ul>
-          </div>);
+          </li>);
       });
     }
+
     return (
-      <div>
-        {benchDisplays}
-        <Map/>
+      <div className="location-container">
+        <ol>
+          {benchDisplays}
+        </ol>
       </div>
     );
   }

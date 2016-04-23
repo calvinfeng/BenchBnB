@@ -10,8 +10,8 @@ BenchStore.all = function() {
 };
 
 BenchStore.resetBenches = function(newBenches) {
-  console.log("resetBenches: new benches are in store now!");
   _benches = newBenches;
+  console.log("new benches: ", _benches);
 };
 
 BenchStore.__onDispatch = function(payload) {

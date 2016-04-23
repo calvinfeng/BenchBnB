@@ -1,7 +1,11 @@
+require 'byebug'
+require 'rack/utils'
+
 class Api::BenchesController < ApplicationController
 
   def index
-    @benches = Bench.all
+    query_bounds = Rack::Utils.parse_nested_query(params[:bounds])
+    @benches = Bench.in_bounds(query_bounds)
     render :index
   end
 
