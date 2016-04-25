@@ -14,13 +14,26 @@ var Index = React.createClass({
     BenchStore.addListener(this.__onChange);
   },
 
+  mouseEnterHandler: function(e) {
+    e.currentTarget.className = "highlight";
+  },
+
+  mouseLeaveHandler: function(e) {
+    e.currentTarget.className = "";
+  },
+
   render: function() {
     var benchDisplays = [];
     var benches = this.state.benches;
+    var self = this;
     if (benches.length > 0) {
       benches.forEach(function(bench) {
         benchDisplays.push(
-          <li key={bench.id}>
+          <li
+            key={bench.id}
+            onMouseEnter={self.mouseEnterHandler} 
+            onMouseLeave={self.mouseLeaveHandler}
+          >
             Description: {bench.description}
             <ul>
               <li>Latitude: {bench.lat}</li>

@@ -22,6 +22,21 @@ locations = [
     description: "West Oakland BART Station",
     lat: 37.804873,
     lng: -122.295140
+  },
+  {
+    description: "Power BART Station",
+    lat: 37.784469,
+    lng: -122.407986
+  },
+  {
+    description: "Golden Gate Park",
+    lat: 37.769040,
+    lng: -122.483519
+  },
+  {
+    description: "Montgomery BART Station",
+    lat: 37.774929,
+    lng: -122.419416
   }
 ]
 

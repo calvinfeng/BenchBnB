@@ -17,6 +17,7 @@ body {
   font-family: "Roboto", sans-serif;
   font-size: 16px;
   font-weight: 400;
+  margin-left: 50px;
 }
 
 .map {
@@ -32,18 +33,22 @@ body {
 .location-container {
   float: left;
   margin-left: 20px;
+  width: 400px;
   display: inline-block;
-  width: 800px;
-  border: 2px solid black;
+  /*border: 2px solid black;*/
   padding: 10px 10px 10px 10px;
 }
 
 .map-container {
   float: right;
-  margin-right: 100px;
+  margin-top: 25px;
+  margin-right: 50px;
   display: inline-block;
   position: relative;
-  background-color: blue;
+}
+
+.highlight {
+  background-color: yellow;
 }
 
 ol > li {
