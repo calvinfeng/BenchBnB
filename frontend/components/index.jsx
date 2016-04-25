@@ -1,5 +1,6 @@
 var React = require('react');
 var BenchStore = require('../stores/bench_store');
+var MouseActions = require('../actions/mouse_actions');
 
 var Index = React.createClass({
   getInitialState: function() {
@@ -16,10 +17,12 @@ var Index = React.createClass({
 
   mouseEnterHandler: function(e) {
     e.currentTarget.className = "highlight";
+    MouseActions.selectBench(parseInt(e.currentTarget.id));
   },
 
   mouseLeaveHandler: function(e) {
     e.currentTarget.className = "";
+    MouseActions.deselectBench(parseInt(e.currentTarget.id));
   },
 
   render: function() {
@@ -27,20 +30,19 @@ var Index = React.createClass({
     var benches = this.state.benches;
     var self = this;
     if (benches.length > 0) {
-      benches.forEach(function(bench) {
+      for (var i = 0; i < benches.length; i ++) {
         benchDisplays.push(
-          <li
-            key={bench.id}
-            onMouseEnter={self.mouseEnterHandler} 
-            onMouseLeave={self.mouseLeaveHandler}
-          >
-            Description: {bench.description}
+          <li id={i} key={benches[i].id}
+            onMouseEnter={self.mouseEnterHandler}
+            onMouseLeave={self.mouseLeaveHandler}>
+            Description: {benches[i].description}
             <ul>
-              <li>Latitude: {bench.lat}</li>
-              <li>Longitude: {bench.lng}</li>
+              <li>Latitude: {benches[i].lat}</li>
+              <li>Longitude: {benches[i].lng}</li>
             </ul>
-          </li>);
-      });
+          </li>
+        );
+      }
     }
 
     return (
@@ -51,7 +53,6 @@ var Index = React.createClass({
       </div>
     );
   }
-
 });
 
 module.exports = Index;
