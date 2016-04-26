@@ -1,4 +1,4 @@
-require 'bcrypt'
+require 'Bcrypt'
 class User < ActiveRecord::Base
   attr_reader :password
 

@@ -16,10 +16,10 @@ class Api::SessionsController < ApplicationController
     @user = current_user
     if @user
       sign_out
-      render "api/user/show"
+      render "api/users/show"
     else
       @errors = ["no one has signed in"]
-      render "api/shared/error", status 404
+      render "api/shared/error", status: 404
     end
   end
 
@@ -29,8 +29,8 @@ class Api::SessionsController < ApplicationController
       render "api/users/show"
     else
       @errors = nil
-      render "api/shared/error", status 404
+      render "api/shared/error", status: 404
     end
   end
-  
+
 end

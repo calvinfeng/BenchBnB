@@ -38,10 +38,10 @@ var UserActions = {
     });
   },
 
-  handleError: function(error) {
+  handleError: function(response) {
     AppDispatcher.dispatch({
       actionType: UserConstants.ERROR,
-      errors: error.responseJSON.errors
+      errors: response.error()
     });
   },
 
@@ -56,3 +56,5 @@ var UserActions = {
   }
 
 };
+
+module.exports = UserActions;

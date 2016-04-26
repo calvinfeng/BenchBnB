@@ -4,9 +4,10 @@ class Api::UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       sign_in(@user)
+      render "api/users/show"
     else
       @errors = @user.errors.full_messages
-      render "api/users/show", status: 422
+      render "api/shared/error", status: 422
     end
   end
 

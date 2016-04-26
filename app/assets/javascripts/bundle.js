@@ -50,7 +50,7 @@
 	
 	var Index = __webpack_require__(173);
 	var BenchForm = __webpack_require__(255);
-	
+	var LoginForm = __webpack_require__(256);
 	var ReactRouter = __webpack_require__(196);
 	var Router = ReactRouter.Router;
 	var Route = ReactRouter.Route;
@@ -64,6 +64,12 @@
 	    return React.createElement(
 	      'div',
 	      null,
+	      React.createElement(
+	        'h1',
+	        null,
+	        'Bench BnB'
+	      ),
+	      React.createElement(LoginForm, null),
 	      this.props.children
 	    );
 	  }
@@ -73,7 +79,7 @@
 	  Router,
 	  { history: hashHistory },
 	  React.createElement(
-	    Router,
+	    Route,
 	    { path: '/', component: App },
 	    React.createElement(IndexRoute, { component: Index }),
 	    React.createElement(Router, { path: '/benches/new', component: BenchForm })
@@ -20428,8 +20434,8 @@
 
 	var React = __webpack_require__(1);
 	var BenchStore = __webpack_require__(174);
-	var MouseActions = __webpack_require__(195);
-	var Map = __webpack_require__(192);
+	var MouseActions = __webpack_require__(192);
+	var Map = __webpack_require__(193);
 	
 	var Index = React.createClass({
 	  displayName: 'Index',
@@ -26990,10 +26996,35 @@
 /* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
+	var AppDispatcher = __webpack_require__(168);
+	var BenchConstants = __webpack_require__(172);
+	
+	var MouseActions = {
+	  selectBench: function (benchIndex) {
+	    AppDispatcher.dispatch({
+	      actionType: BenchConstants.BENCH_SELECTED,
+	      benchIndex: benchIndex
+	    });
+	  },
+	
+	  deselectBench: function (benchIndex) {
+	    AppDispatcher.dispatch({
+	      actionType: BenchConstants.BENCH_DESELECTED,
+	      benchIndex: benchIndex
+	    });
+	  }
+	};
+	
+	module.exports = MouseActions;
+
+/***/ },
+/* 193 */
+/***/ function(module, exports, __webpack_require__) {
+
 	var React = __webpack_require__(1);
 	var BenchStore = __webpack_require__(174);
-	var MarkerStore = __webpack_require__(193);
-	var ClientActions = __webpack_require__(194);
+	var MarkerStore = __webpack_require__(194);
+	var ClientActions = __webpack_require__(195);
 	var hashHistory = __webpack_require__(196).hashHistory;
 	
 	var _markers = [];
@@ -27059,7 +27090,7 @@
 	module.exports = Map;
 
 /***/ },
-/* 193 */
+/* 194 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var AppDispatcher = __webpack_require__(168);
@@ -27128,7 +27159,7 @@
 	module.exports = MarkerStore;
 
 /***/ },
-/* 194 */
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var ApiUtil = __webpack_require__(166);
@@ -27145,31 +27176,6 @@
 	};
 	
 	module.exports = ClientActions;
-
-/***/ },
-/* 195 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var AppDispatcher = __webpack_require__(168);
-	var BenchConstants = __webpack_require__(172);
-	
-	var MouseActions = {
-	  selectBench: function (benchIndex) {
-	    AppDispatcher.dispatch({
-	      actionType: BenchConstants.BENCH_SELECTED,
-	      benchIndex: benchIndex
-	    });
-	  },
-	
-	  deselectBench: function (benchIndex) {
-	    AppDispatcher.dispatch({
-	      actionType: BenchConstants.BENCH_DESELECTED,
-	      benchIndex: benchIndex
-	    });
-	  }
-	};
-	
-	module.exports = MouseActions;
 
 /***/ },
 /* 196 */
@@ -32588,7 +32594,7 @@
 
 	var React = __webpack_require__(1);
 	var BenchStore = __webpack_require__(174);
-	var ClientActions = __webpack_require__(194);
+	var ClientActions = __webpack_require__(195);
 	var hashHistory = __webpack_require__(196).hashHistory;
 	
 	var BenchForm = React.createClass({
@@ -32680,6 +32686,348 @@
 	});
 	
 	module.exports = BenchForm;
+
+/***/ },
+/* 256 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var UserActions = __webpack_require__(257);
+	var CurrentUserState = __webpack_require__(261);
+	var UserStore = __webpack_require__(259);
+	var LoginForm = React.createClass({
+	  displayName: "LoginForm",
+	
+	
+	  getInitialState: function () {
+	    return { form: "login" };
+	  },
+	
+	  __onChange: function () {
+	    this.setState({ currentUser: UserStore.currentUser(),
+	      userErrors: UserStore.errors() });
+	  },
+	
+	  componentDidMount: function () {
+	    UserStore.addListener(this.__onChange);
+	  },
+	
+	  setForm: function (e) {
+	    this.setState({ form: e.currentTarget.value });
+	  },
+	
+	  handleSubmit: function (e) {
+	    e.preventDefault();
+	    UserActions[this.state.form]({
+	      username: this.state.username,
+	      password: this.state.password
+	    });
+	    this.setState({
+	      username: null,
+	      password: null
+	    });
+	  },
+	
+	  logout: function (e) {
+	    e.preventDefault();
+	    UserActions.logout();
+	  },
+	
+	  errors: function () {
+	    if (!this.state.userErrors) {
+	      return;
+	    }
+	    return React.createElement(
+	      "ul",
+	      null,
+	      this.state.userErrors.errors.map(function (error, idx) {
+	        return React.createElement(
+	          "li",
+	          { key: idx },
+	          error
+	        );
+	      })
+	    );
+	  },
+	
+	  updateUsername: function (event) {
+	    this.setState({ username: event.target.value });
+	  },
+	
+	  updatePassword: function (event) {
+	    this.setState({ password: event.target.value });
+	  },
+	
+	  greeting: function () {
+	    if (!this.state.currentUser) {
+	      return;
+	    }
+	    return React.createElement(
+	      "div",
+	      null,
+	      React.createElement(
+	        "h2",
+	        null,
+	        "Hi, ",
+	        this.state.currentUser.username
+	      ),
+	      React.createElement("input", { type: "submit", value: "logout", onClick: this.logout })
+	    );
+	  },
+	
+	  form: function () {
+	    if (this.state.currentUser) {
+	      return;
+	    }
+	    return React.createElement(
+	      "form",
+	      { onSubmit: this.handleSubmit },
+	      React.createElement(
+	        "section",
+	        null,
+	        React.createElement(
+	          "label",
+	          null,
+	          " Username:",
+	          React.createElement("input", { type: "text", value: this.state.username, onChange: this.updateUsername })
+	        ),
+	        React.createElement(
+	          "label",
+	          null,
+	          " Password:",
+	          React.createElement("input", { type: "password", value: this.state.password, onChange: this.updatePassword })
+	        )
+	      ),
+	      React.createElement(
+	        "section",
+	        null,
+	        React.createElement(
+	          "label",
+	          null,
+	          " Login",
+	          React.createElement("input", { type: "Radio", name: "action", value: "login", onChange: this.setForm })
+	        ),
+	        React.createElement(
+	          "label",
+	          null,
+	          " Sign up",
+	          React.createElement("input", { type: "Radio", name: "action", value: "signup", onChange: this.setForm })
+	        )
+	      ),
+	      React.createElement("input", { type: "Submit" })
+	    );
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      "div",
+	      { id: "login-form" },
+	      this.greeting(),
+	      this.errors(),
+	      this.form()
+	    );
+	  }
+	});
+	
+	module.exports = LoginForm;
+
+/***/ },
+/* 257 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var AppDispatcher = __webpack_require__(168);
+	var UserConstants = __webpack_require__(258);
+	var UserStore = __webpack_require__(259);
+	var UserApiUtil = __webpack_require__(260);
+	
+	var UserActions = {
+	  fetchCurrentUser: function () {
+	    UserApiUtil.fetchCurrentUser(UserActions.receiveCurrentUser, UserActions.handleError);
+	  },
+	
+	  signup: function (user) {
+	    UserApiUtil.post({
+	      url: "/api/user",
+	      user: user,
+	      success: UserActions.receiveCurrentUser,
+	      error: UserActions.handleError
+	    });
+	  },
+	
+	  login: function (user) {
+	    UserApiUtil.post({
+	      url: "/api/session",
+	      user: user,
+	      success: UserActions.receiveCurrentUser,
+	      error: UserActions.handleError
+	    });
+	  },
+	
+	  guestLogin: function () {
+	    UserActions.login({ username: "guest", password: "password" });
+	  },
+	
+	  receiveCurrentUser: function (user) {
+	    AppDispatcher.dispatch({
+	      actionType: UserConstants.LOGIN,
+	      user: user
+	    });
+	  },
+	
+	  handleError: function (response) {
+	    AppDispatcher.dispatch({
+	      actionType: UserConstants.ERROR,
+	      errors: response.error()
+	    });
+	  },
+	
+	  removeCurrentUser: function () {
+	    AppDispatcher.dispatch({
+	      actionType: UserConstants.LOGOUT
+	    });
+	  },
+	
+	  logout: function () {
+	    UserApiUtil.logout(UserActions.removeCurrentUser, UserActions.handleError);
+	  }
+	
+	};
+	
+	module.exports = UserActions;
+
+/***/ },
+/* 258 */
+/***/ function(module, exports) {
+
+	var UserConstants = {
+		LOGIN: "LOGIN",
+		ERROR: "ERROR",
+		LOGOUT: "LOGOUT"
+	};
+	
+	module.exports = UserConstants;
+
+/***/ },
+/* 259 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Store = __webpack_require__(175).Store;
+	var AppDispatcher = __webpack_require__(168);
+	var UserStore = new Store(AppDispatcher);
+	
+	var _currentUser, _authErrors;
+	
+	UserStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case "LOGIN":
+	      UserStore.login(payload.user);
+	      break;
+	    case "LOGOUT":
+	      UserStore.logout(payload.user);
+	      break;
+	    case "ERROR":
+	      UserStore.setErrors(payload.errors);
+	      break;
+	  }
+	  UserStore.__emitChange();
+	};
+	
+	UserStore.login = function (user) {
+	  _currentUser = user;
+	  _authErrors = null;
+	};
+	
+	UserStore.logout = function () {
+	  _currentUser = null;
+	  _authErrors = null;
+	};
+	
+	UserStore.currentUser = function () {
+	  if (_currentUser) {
+	    return $.extend({}, _currentUser);
+	  }
+	};
+	
+	UserStore.setErrors = function (errors) {
+	  _authErrors = errors;
+	};
+	
+	UserStore.errors = function () {
+	  if (_authErrors) {
+	    // return [].slice.call(_authErrors);
+	    return JSON.parse(_authErrors.responseText);
+	  }
+	};
+	
+	module.exports = UserStore;
+
+/***/ },
+/* 260 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var AppDispatcher = __webpack_require__(168);
+	
+	var UserApiUtil = {
+	  post: function (options) {
+	    $.ajax({
+	      url: options.url,
+	      type: "POST",
+	      data: { user: options.user },
+	      success: options.success,
+	      error: options.error
+	    });
+	  },
+	
+	  logout: function (success, error) {
+	    $.ajax({
+	      url: "/api/session",
+	      method: "DELETE",
+	      success: success,
+	      error: error
+	    });
+	  },
+	
+	  fetchCurrentUser: function (success, error) {
+	    $.ajax({
+	      url: "/api/session",
+	      method: "GET",
+	      success: success,
+	      error: error
+	    });
+	  }
+	};
+	
+	module.exports = UserApiUtil;
+
+/***/ },
+/* 261 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var UserStore = __webpack_require__(259);
+	var UserActions = __webpack_require__(257);
+	
+	var CurrentUserState = {
+	  getInitialState: function () {
+	    return {
+	      currentUser: UserStore.currentUser(),
+	      userErrors: UserStore.errors()
+	    };
+	  },
+	
+	  componentDidMount: function () {
+	    UserStore.addListener(this.updateUser);
+	    if (typeof UserStore.currentUser === 'undefined') {
+	      UserActions.fetchCurrentUser();
+	    }
+	  },
+	
+	  updateUser: function () {
+	    this.setState({
+	      currentUser: UserStore.currentUser(),
+	      userErrors: UserStore.errors()
+	    });
+	  }
+	};
 
 /***/ }
 /******/ ]);

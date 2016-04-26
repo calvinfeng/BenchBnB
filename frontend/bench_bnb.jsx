@@ -4,7 +4,7 @@ var ApiUtil = require('./util/api_util');
 
 var Index = require('./components/index');
 var BenchForm = require('./components/bench_form');
-
+var LoginForm = require('./components/login_form');
 var ReactRouter = require('react-router');
 var Router = ReactRouter.Router;
 var Route = ReactRouter.Route;
@@ -15,6 +15,8 @@ var App = React.createClass({
   render: function() {
     return (
       <div>
+        <h1>Bench BnB</h1>
+        <LoginForm/>
         {this.props.children}
       </div>
     );
@@ -23,11 +25,11 @@ var App = React.createClass({
 
 var routes = (
   <Router history={hashHistory}>
-    <Router path="/" component={App}>
+    <Route path="/" component={App}>
       <IndexRoute component={Index}/>
       <Router path="/benches/new" component={BenchForm}>
       </Router>
-    </Router>
+    </Route>
   </Router>
 );
 
