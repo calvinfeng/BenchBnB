@@ -2,6 +2,7 @@ var React = require('react');
 var BenchStore = require('../stores/bench_store');
 var MarkerStore = require('../stores/marker_store');
 var ClientActions = require('../actions/client_actions');
+var hashHistory = require('react-router').hashHistory;
 
 var _markers = [];
 var Map = React.createClass({
@@ -22,6 +23,17 @@ var Map = React.createClass({
 
     BenchStore.addListener(this.__onChange);
     this.map.addListener('idle', this.refetchWhenDragged);
+    this.map.addListener('click', this.mapClickHandle);
+  },
+  
+  mapClickHandle: function(e) {
+    var lat = e.latLng.lat();
+    var lng = e.latLng.lng();
+    console.log(lat, lng);
+    hashHistory.push({
+      pathname: "benches/new",
+      query: {lat: lat, lng: lng}
+    });
   },
 
   refetchWhenDragged: function() {
@@ -47,9 +59,7 @@ var Map = React.createClass({
 
   render: function() {
     return (
-      <div className="map-container">
-        <div className="map" ref="map"></div>
-      </div>
+      <div className="map" ref="map"></div>
     );
   }
 });

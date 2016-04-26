@@ -1,6 +1,7 @@
 var React = require('react');
 var BenchStore = require('../stores/bench_store');
 var MouseActions = require('../actions/mouse_actions');
+var Map = require('./map');
 
 var Index = React.createClass({
   getInitialState: function() {
@@ -46,10 +47,15 @@ var Index = React.createClass({
     }
 
     return (
-      <div className="location-container">
-        <ol>
-          {benchDisplays}
-        </ol>
+      <div className="index-container">
+        <div className="location-container">
+          <ol>
+            {benchDisplays}
+          </ol>
+        </div>
+        <div className="map-container">
+          <Map/>
+        </div>
       </div>
     );
   }

@@ -15,36 +15,39 @@
  */
 body {
   font-family: "Roboto", sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 400;
-  margin-left: 50px;
 }
 
 .map {
-  width: 500px;
+  width: 900px;
   height: 500px;
 }
 
-.app:after {
+/*.index-container:after {
   content: "";
   clear: both;
+  display: block;
+}*/
+
+.index-container {
+
+  display: flex;
+  border: 1px solid black;
+  width: 100%;
+  margin: 0 auto
 }
 
 .location-container {
-  float: left;
-  margin-left: 20px;
-  width: 400px;
-  display: inline-block;
-  /*border: 2px solid black;*/
+  margin: 20px 20px 20px 20px;
+  width: 300px;
   padding: 10px 10px 10px 10px;
 }
 
 .map-container {
-  float: right;
-  margin-top: 25px;
-  margin-right: 50px;
-  display: inline-block;
-  position: relative;
+  margin-top: 40px;
+  margin-right: 20px;
+  margin-bottom: 20px;
 }
 
 .highlight {
@@ -52,5 +55,5 @@ body {
 }
 
 ol > li {
-  padding-bottom: 10px;
+  padding-bottom: 30px;
 }

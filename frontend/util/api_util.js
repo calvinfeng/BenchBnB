@@ -14,7 +14,19 @@ var ApiUtil = {
         console.log(errors);
       }
     });
+  },
+
+  createBench: function(bench) {
+    $.ajax({
+      method: "POST",
+      url: "api/benches",
+      data: {bench: bench},
+      success: function(response) {
+        console.log("Bench created!");
+      }
+    });
   }
+
 };
 
 module.exports = ApiUtil;
